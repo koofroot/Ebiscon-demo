@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbisconDemo.Services", "Ebi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbisconDemo.Infrastructure", "EbisconDemo.Infrastructure\EbisconDemo.Infrastructure.csproj", "{A1F1C7BD-20B2-4AE8-BD08-237ACDD71559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbisconDemo.Services.Tests", "EbisconDemo.Services.Tests\EbisconDemo.Services.Tests.csproj", "{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbisconDemo.Services.Tests", "EbisconDemo.Services.Tests\EbisconDemo.Services.Tests.csproj", "{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7F328877-CF80-46FB-ADB8-C1898A1AD6BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D} = {7F328877-CF80-46FB-ADB8-C1898A1AD6BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC781CE4-1382-4580-9337-8E0AE6DBF0C8}

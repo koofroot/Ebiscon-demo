@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BCrypt.Net;
 using EbisconDemo.Data.Interfaces;
 using EbisconDemo.Data.Models;
 using EbisconDemo.Data.Models.Enums;
@@ -12,6 +11,8 @@ namespace EbisconDemo.Services.Services
 {
     public class UserService : IUserService
     {
+        private const int TokenExpirationInMinutes = 30;
+
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -30,7 +31,7 @@ namespace EbisconDemo.Services.Services
                 throw new UserNotFoundException();
             }
 
-            var hash = HashMeBitch(loginDto.Password);
+            var hash = HashPassword(loginDto.Password);
 
             var user = _userRepository.GetByCredentials(loginDto.Email, hash);
 
@@ -39,7 +40,7 @@ namespace EbisconDemo.Services.Services
                 throw new UserNotFoundException();
             }
 
-            var expiration = DateTime.UtcNow.AddMinutes(30);
+            var expiration = DateTime.UtcNow.AddMinutes(TokenExpirationInMinutes);
             var jwt = _jwtTokenGenerator.GenerateToken(user, expiration);
 
             return new LoginResponseDto
@@ -69,23 +70,23 @@ namespace EbisconDemo.Services.Services
         {
             // todo: validate model
 
-            var isExist = _userRepository.IsExist(registerDto.Email);
+            var isUserExist = _userRepository.IsExist(registerDto.Email);
 
-            if (isExist)
+            if (isUserExist)
             {
                 throw new UserAlreadyExistException();
             }
 
             var user = _mapper.Map<User>(registerDto);
 
-            user.Password = HashMeBitch(user.Password);
+            user.Password = HashPassword(user.Password);
 
             _userRepository.CreateUser(user);
 
             _userRepository.Save();
         }
 
-        private string HashMeBitch(string password)
+        private string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password, EbisconConstants.PasswordSalt);
         }
