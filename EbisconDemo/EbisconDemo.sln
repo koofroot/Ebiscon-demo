@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbisconDemo.Api", "EbisconD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbisconDemo.Data", "EbisconDemo.Data\EbisconDemo.Data.csproj", "{CB77D8C5-8020-4764-8A90-E27DDB830506}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbisconDemo.Services", "EbisconDemo.Services\EbisconDemo.Services.csproj", "{2E1F594D-0F01-4464-B9B1-EF94A059FB8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbisconDemo.Services", "EbisconDemo.Services\EbisconDemo.Services.csproj", "{2E1F594D-0F01-4464-B9B1-EF94A059FB8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbisconDemo.Infrastructure", "EbisconDemo.Infrastructure\EbisconDemo.Infrastructure.csproj", "{A1F1C7BD-20B2-4AE8-BD08-237ACDD71559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbisconDemo.Infrastructure", "EbisconDemo.Infrastructure\EbisconDemo.Infrastructure.csproj", "{A1F1C7BD-20B2-4AE8-BD08-237ACDD71559}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbisconDemo.Services.Tests", "EbisconDemo.Services.Tests\EbisconDemo.Services.Tests.csproj", "{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A1F1C7BD-20B2-4AE8-BD08-237ACDD71559}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1F1C7BD-20B2-4AE8-BD08-237ACDD71559}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1F1C7BD-20B2-4AE8-BD08-237ACDD71559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF0F4E85-F67F-494E-BBD6-BD48518E8A3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

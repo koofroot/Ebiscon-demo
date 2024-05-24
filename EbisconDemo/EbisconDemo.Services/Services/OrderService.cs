@@ -16,10 +16,10 @@ namespace EbisconDemo.Services.Services
         private readonly IMapper _mapper;
 
         public OrderService(
-            IRepository<Order> orderRepository,
-            IMapper mapper,
+            INotificationService notificationService,
             IRepository<Product> productRepository,
-            INotificationService notificationService)
+            IRepository<Order> orderRepository,
+            IMapper mapper)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
@@ -31,7 +31,7 @@ namespace EbisconDemo.Services.Services
         {
             var orders = _orderRepository.GetAll();
 
-            if(orders == null)
+            if(orders == null || !orders.Any())
             {
                 return null!;
             }

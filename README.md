@@ -17,4 +17,4 @@ User API and chage role in DB to 'Admin' OR use this scrypt instead
   -- pass: pass123#A`
 
 ### Database structure
-![Database structure](/DB-structure.png)
+![Database structure](./DB-structure.png)
