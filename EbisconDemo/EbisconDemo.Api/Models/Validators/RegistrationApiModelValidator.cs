@@ -15,9 +15,7 @@ namespace EbisconDemo.Api.Models.Validators
             RuleFor(x => x.FirstName).NotNull().NotEmpty()
                 .WithMessage("First name is required.");
             RuleFor(x => x.LastName).NotNull().NotEmpty()
-                .WithMessage("Last name is required.");          
-            
-            // TODO: check is email unique
+                .WithMessage("Last name is required.");
         }
     }
 }
