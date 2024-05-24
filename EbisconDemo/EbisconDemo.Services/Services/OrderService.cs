@@ -79,8 +79,6 @@ namespace EbisconDemo.Services.Services
 
             var createdOrder = _orderRepository.Get(order.Id);
 
-            // TODO: Invoke event order created
-
             var mapped = _mapper.Map<Order, OrderDto>(createdOrder!);
 
             return mapped;

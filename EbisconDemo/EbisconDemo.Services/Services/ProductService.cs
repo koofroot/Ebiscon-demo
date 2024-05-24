@@ -32,7 +32,6 @@ namespace EbisconDemo.Services.Services
 
             if(product == null)
             {
-                // TODO: check if ok? make midware to return 404
                 return null!;
             }
 

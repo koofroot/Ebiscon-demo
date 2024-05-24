@@ -27,7 +27,6 @@ namespace EbisconDemo.Services.Services
         {
             if(string.IsNullOrWhiteSpace(loginDto.Password) || string.IsNullOrWhiteSpace(loginDto.Email))
             {
-                // TODO: use custom exception to return 403. Change middlware
                 throw new UserNotFoundException();
             }
 
@@ -37,7 +36,6 @@ namespace EbisconDemo.Services.Services
 
             if (user == null) 
             {
-                // todo: add custom to return 403
                 throw new UserNotFoundException();
             }
 
@@ -69,13 +67,12 @@ namespace EbisconDemo.Services.Services
 
         public void Register(RegistrationDto registerDto)
         {
-            // TODO: validate ???
+            // todo: validate model
 
             var isExist = _userRepository.IsExist(registerDto.Email);
 
             if (isExist)
             {
-                //todo: custom exception
                 throw new UserAlreadyExistException();
             }
 
