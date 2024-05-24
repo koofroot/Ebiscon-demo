@@ -20,7 +20,7 @@ namespace EbisconDemo.Api.HostedServices
             scope = _serviceProvider.CreateScope();
             var syncService = scope.ServiceProvider.GetRequiredService<ISynchronizationService>();
 
-            timer = new Timer(async _ => await syncService.SyncProductsAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(100));
+            timer = new Timer(async _ => await syncService.SyncProductsAsync(), null, TimeSpan.Zero, TimeSpan.FromDays(1));
 
             return Task.CompletedTask;
         }
