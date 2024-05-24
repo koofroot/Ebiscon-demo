@@ -32,29 +32,29 @@ namespace EbisconDemo.Services.Tests.Services
         }
 
         [TestMethod]
-        public void GetAllOrders_WhenNoOrders_ShouldReturnNull()
+        public async Task GetAllOrders_WhenNoOrders_ShouldReturnNull()
         {
-            _orderRepository.Setup(x => x.GetAll())
-                .Returns(new List<Order>());
+            _orderRepository.Setup(x => x.GetAllAsync())
+                .Returns(Task.FromResult(new List<Order>().AsEnumerable()));
 
-            var expected = _orderService.GetAllOrders();
+            var expected = await _orderService.GetAllOrdersAsync();
 
             Assert.IsNull(expected);
         }
 
         [TestMethod]
-        public void GetAllOrders_WhenHasOrders_ShouldMapper()
+        public async Task GetAllOrders_WhenHasOrders_ShouldMapper()
         {
             var orders = new List<Order>() { 
                 new Order() { Id = 1 },
                 new Order() { Id = 2 },
                 new Order() { Id = 2 }
             };
-            _orderRepository.Setup(x => x.GetAll())
-               .Returns(orders);
+            _orderRepository.Setup(x => x.GetAllAsync())
+               .Returns(Task.FromResult(orders.AsEnumerable()));
             _mapper.Setup(x => x.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders));
 
-            var expected = _orderService.GetAllOrders();
+            var expected = await _orderService.GetAllOrdersAsync();
 
             _mapper.Verify(x => x.Map<IEnumerable<OrderDto>>(orders));
         }

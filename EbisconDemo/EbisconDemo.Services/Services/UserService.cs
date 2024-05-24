@@ -24,7 +24,7 @@ namespace EbisconDemo.Services.Services
             _mapper = mapper;
         }
 
-        public LoginResponseDto Login(LoginRequestDto loginDto)
+        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto loginDto)
         {
             if(string.IsNullOrWhiteSpace(loginDto.Password) || string.IsNullOrWhiteSpace(loginDto.Email))
             {
@@ -33,7 +33,7 @@ namespace EbisconDemo.Services.Services
 
             var hash = HashPassword(loginDto.Password);
 
-            var user = _userRepository.GetByCredentials(loginDto.Email, hash);
+            var user = await _userRepository.GetByCredentialsAsync(loginDto.Email, hash);
 
             if (user == null) 
             {
@@ -41,7 +41,7 @@ namespace EbisconDemo.Services.Services
             }
 
             var expiration = DateTime.UtcNow.AddMinutes(TokenExpirationInMinutes);
-            var jwt = _jwtTokenGenerator.GenerateToken(user, expiration);
+            var jwt = await _jwtTokenGenerator.GenerateTokenAsync(user, expiration);
 
             return new LoginResponseDto
             {
@@ -50,27 +50,27 @@ namespace EbisconDemo.Services.Services
             };
         }
 
-        public void SetUserRole(string userEmail, string role)
+        public async Task SetUserRoleAsync(string userEmail, string role)
         {
             var isRoleExist = Enum.TryParse<UserType>(role, true, out var parsedRole);
 
-            var isUserExist = _userRepository.IsExist(userEmail);
+            var isUserExist = await _userRepository.IsExistAsync(userEmail);
 
             if(!isRoleExist || !isUserExist)
             {
                 throw new UserNotFoundException("User or role is not found.");
             }
 
-            _userRepository.SetRole(userEmail, parsedRole);
+            await _userRepository.SetRoleAsync(userEmail, parsedRole);
 
-            _userRepository.Save();
+            await _userRepository.SaveAsync();
         }
 
-        public void Register(RegistrationDto registerDto)
+        public async Task RegisterAsync(RegistrationDto registerDto)
         {
             // todo: validate model
 
-            var isUserExist = _userRepository.IsExist(registerDto.Email);
+            var isUserExist = await _userRepository.IsExistAsync(registerDto.Email);
 
             if (isUserExist)
             {
@@ -81,9 +81,9 @@ namespace EbisconDemo.Services.Services
 
             user.Password = HashPassword(user.Password);
 
-            _userRepository.CreateUser(user);
+            await _userRepository.CreateUserAsync(user);
 
-            _userRepository.Save();
+            await _userRepository.SaveAsync();
         }
 
         private string HashPassword(string password)

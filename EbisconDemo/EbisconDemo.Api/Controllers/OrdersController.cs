@@ -13,7 +13,6 @@ namespace EbisconDemo.Api.Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly IValidator<OrderApiModel> _orderValidator;
         private readonly IOrderService _orderService;
 
         public OrdersController(IOrderService orderService)
@@ -23,7 +22,7 @@ namespace EbisconDemo.Api.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Customer")]
-        public IActionResult OrderProduct([FromBody] OrderApiModel model)
+        public async Task<IActionResult> OrderProductAsync([FromBody] OrderApiModel model)
         {
             var creationModel = new CreateOrderDto
             {
@@ -32,44 +31,44 @@ namespace EbisconDemo.Api.Controllers
                 UserId = User.GetCurrentUserId()
             };
 
-            var order = _orderService.OrderProduct(creationModel);
+            var order = await _orderService.OrderProductAsync(creationModel);
 
             return Ok(order);
         }
 
         [HttpPut]
         [Authorize(Roles = "Manager")]
-        public IActionResult SetOrderStatus(int orderId, string status)
+        public async Task<IActionResult> SetOrderStatusAsync(int orderId, string status)
         {
             if (orderId <= 0 || string.IsNullOrWhiteSpace(status))
             {
                 return BadRequest();
             }
 
-            _orderService.SetStatus(orderId, status);
+            await _orderService.SetStatusAsync(orderId, status);
 
             return Ok();
         }
 
         [HttpGet]
         [Authorize(Roles = "Manager,Admin")]
-        public IActionResult Orders()
+        public async Task<IActionResult> GetAllOrdersAsync()
         {
-            var orders = _orderService.GetAllOrders();
+            var orders = await _orderService.GetAllOrdersAsync();
 
             return Ok(orders);
         }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Manager,Admin")]
-        public IActionResult GetOrder(int id)
+        public async Task<IActionResult> GetOrderAsnc(int id)
         {
             if (id <= 0)
             {
                 return NotFound("Id must be greater than 0.");
             }
 
-            var order = _orderService.GetOrder(id);
+            var order = await _orderService.GetOrderAsync(id);
 
             return Ok(order);
         }

@@ -4,6 +4,6 @@ namespace EbisconDemo.Services.Interfaces
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(User user, DateTime tokenLifetime);
+        Task<string> GenerateTokenAsync(User user, DateTime tokenLifetime);
     }
 }

@@ -16,30 +16,30 @@ namespace EbisconDemo.Data
             _dbSet = context.Set<User>();
         }
 
-        public void CreateUser(User user)
+        public Task CreateUserAsync(User user)
         {
-            _dbSet.Add(user);
+            return _dbSet.AddAsync(user).AsTask();
         }
 
-        public User GetByCredentials(string email, string password)
+        public Task<User>? GetByCredentialsAsync(string email, string password)
         {
-            return _dbSet.SingleOrDefault(x => x.Email.ToLower() == email.ToLower() && x.Password == password);
+            return _dbSet.SingleOrDefaultAsync(x => x.Email.ToLower() == email.ToLower() && x.Password == password)!;
         }
 
-        public bool IsExist(string email)
+        public Task<bool> IsExistAsync(string email)
         {
-            return _dbSet.Any(x => x.Email.ToLower() == email.ToLower());
+            return _dbSet.AnyAsync(x => x.Email.ToLower() == email.ToLower());
         }
-        public void SetRole(string userEmail, UserType parsedRole)
+        public async Task SetRoleAsync(string userEmail, UserType parsedRole)
         {
-            var user = _dbSet.SingleOrDefault(x => x.Email.ToLower() == userEmail.ToLower());
+            var user = await _dbSet.SingleOrDefaultAsync(x => x.Email.ToLower() == userEmail.ToLower());
 
             user.UserType = parsedRole;
         }
 
-        public void Save()
+        public Task SaveAsync()
         {
-            _context.SaveChanges();
+            return _context.SaveChangesAsync();
         }
     }
 }

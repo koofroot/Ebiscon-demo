@@ -4,8 +4,8 @@ namespace EbisconDemo.Services.Interfaces
 {
     public interface IUserService
     {
-        LoginResponseDto Login(LoginRequestDto mapped);
-        void SetUserRole(string userEmail, string role);
-        void Register(RegistrationDto mapped);
+        Task<LoginResponseDto> LoginAsync(LoginRequestDto mapped);
+        Task SetUserRoleAsync(string userEmail, string role);
+        Task RegisterAsync(RegistrationDto mapped);
     }
 }

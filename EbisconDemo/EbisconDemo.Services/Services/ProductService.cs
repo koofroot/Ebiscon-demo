@@ -17,25 +17,25 @@ namespace EbisconDemo.Services.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ProductDto> GetAllProducts()
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
         {
-            var products = _productRepository.GetAll();
+            var products = await _productRepository.GetAllAsync();
 
             var mapped = _mapper.Map<IEnumerable<ProductDto>>(products);
 
             return mapped;
         }
 
-        public ProductDto GetProduct(int id)
+        public async Task<ProductDto> GetProductAsync(int id)
         {
-            var product = _productRepository.Get(id);
+            var product = await _productRepository.GetAsync(id);
 
             if(product == null)
             {
                 return null!;
             }
 
-            var mapped = _mapper.Map<ProductDto>(product);
+            var mapped = _mapper.Map<Product, ProductDto>(product);
 
             return mapped;
         }

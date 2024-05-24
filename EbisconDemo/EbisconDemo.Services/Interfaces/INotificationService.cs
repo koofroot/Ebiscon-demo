@@ -5,10 +5,10 @@ namespace EbisconDemo.Services.Interfaces
 {
     public interface INotificationService
     {
-        NotificationsResponse GetNotifications(int userId);
+        Task<NotificationsResponse> GetNotificationsAsync(int userId);
 
-        void NotifyOrderCreated(int orderId, string message, int? userId = null);
+        Task NotifyOrderCreatedAsync(int orderId, string message, int? userId = null);
 
-        void SetRead(int id);
+        Task SetReadAsync(int id);
     }
 }

@@ -10,12 +10,12 @@ namespace EbisconDemo.Data
         {
         }
 
-        public override IEnumerable<Product> GetAll()
+        public override async Task<IEnumerable<Product>> GetAllAsync()
         {
             return _dbSet.Include(x => x.Rating).ToList();
         }
 
-        public override Product? Get(int id)
+        public override async Task<Product?> GetAsync(int id)
         {
             return _dbSet.Include(x => x.Rating).FirstOrDefault(x => x.Id == id);
         }

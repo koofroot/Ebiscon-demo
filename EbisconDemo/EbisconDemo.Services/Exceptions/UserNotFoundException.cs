@@ -1,6 +1,6 @@
 ﻿namespace EbisconDemo.Services.Exceptions
 {
-    public class UserNotFoundException : Exception
+    public class UserNotFoundException : NotFoundException
     {
         public UserNotFoundException()
         {            

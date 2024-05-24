@@ -5,14 +5,14 @@ namespace EbisconDemo.Data.Interfaces
 {
     public interface IUserRepository
     {
-        User GetByCredentials(string email, string password);
+        Task<User> GetByCredentialsAsync(string email, string password);
 
-        bool IsExist(string email);
+        Task<bool> IsExistAsync(string email);
 
-        void CreateUser(User user);
+        Task CreateUserAsync(User user);
 
-        void Save();
+        Task SaveAsync();
 
-        void SetRole(string userEmail, UserType parsedRole);
+        Task SetRoleAsync(string userEmail, UserType parsedRole);
     }
 }

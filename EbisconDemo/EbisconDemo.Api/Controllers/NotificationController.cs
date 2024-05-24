@@ -18,12 +18,12 @@ namespace EbisconDemo.Api.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Manager")]
-        public IActionResult GetNotifications() 
+        public async Task<IActionResult> GetNotificationsAsync() 
         {
             // Also for notifications SignalR can be used in case the project is not just an API.
 
             var userId = User.GetCurrentUserId();
-            var notifications = _notificationService.GetNotifications(userId);
+            var notifications = await _notificationService.GetNotificationsAsync(userId);
 
             if(notifications == null)
             {
@@ -35,14 +35,14 @@ namespace EbisconDemo.Api.Controllers
 
         [HttpPut("SetRead")]
         [Authorize(Roles = "Manager")]
-        public IActionResult SetRead(int notificationId)
+        public async Task<IActionResult> SetReadAsync(int notificationId)
         {
             if (notificationId <= 0) 
             {
                 return BadRequest("Invalid notification ID.");
             }
 
-            _notificationService.SetRead(notificationId);
+            await _notificationService.SetReadAsync(notificationId);
 
             return Ok();
         }

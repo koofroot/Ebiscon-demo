@@ -15,39 +15,39 @@ namespace EbisconDemo.Data
             _dbSet = context.Set<T>();
         }
 
-        public virtual void Create(IEnumerable<T> entities)
+        public virtual Task CreateAsync(IEnumerable<T> entities)
         {
             if (entities == null)
             {
                 throw new ArgumentException("Set cannot be null.", nameof(entities));
             }
 
-            _dbSet.AddRange(entities);
+            return _dbSet.AddRangeAsync(entities);
         }
 
-        public virtual void Create(T entity)
+        public virtual Task CreateAsync(T entity)
         {
-            _dbSet.Add(entity);
+            return _dbSet.AddAsync(entity).AsTask();
         }
 
-        public virtual T? Get(int id)
+        public virtual async Task<T?> GetAsync(int id)
         {
             return _dbSet.Find(id);
         }
 
-        public virtual IEnumerable<T> Get(Func<T, bool> predicate)
+        public virtual async Task<IEnumerable<T>> GetAsync(Func<T, bool> predicate)
         {
             return _dbSet.Where(predicate).ToList();
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return _dbSet.ToList();
         }
 
-        public void Save()
+        public Task SaveAsync()
         {
-            _context.SaveChanges();
+            return _context.SaveChangesAsync();
         }
     }
 }

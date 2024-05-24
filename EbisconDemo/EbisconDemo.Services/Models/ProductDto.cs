@@ -11,6 +11,9 @@ namespace EbisconDemo.Services.Models
             Rating = new RatingDto();
         }
 
+        [JsonIgnore]
+        public string SourceName { get; set; }
+
         [JsonPropertyName("id")]
         public int Id { get; set; }
 

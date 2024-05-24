@@ -11,38 +11,32 @@ namespace EbisconDemo.Api.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IValidator<RegistrationApiModel> _registrationModelValidator;
-        private readonly IValidator<LoginApiModel> _loginModelValidator;
-        private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
         public UserController(
-            IValidator<RegistrationApiModel> registrationModelValidator,
             IUserService userService,
-            IMapper mapper,
-            IValidator<LoginApiModel> loginModelValidator)
+            IMapper mapper)
         {
-            _registrationModelValidator = registrationModelValidator;
             _userService = userService;
             _mapper = mapper;
-            _loginModelValidator = loginModelValidator;
         }
 
         [HttpPost("register")]
-        public IActionResult Register(RegistrationApiModel model)
+        public async Task<IActionResult> RegisterAsync(RegistrationApiModel model)
         {
             var mapped = _mapper.Map<RegistrationDto>(model);
-            _userService.Register(mapped);
+            await _userService.RegisterAsync(mapped);
             
             // todo: 204 ??
             return Created();
         }
 
         [HttpPost("login")]
-        public IActionResult Login(LoginApiModel model)
+        public async Task<IActionResult> Login(LoginApiModel model)
         {
             var mapped = _mapper.Map<LoginRequestDto>(model);
-            var token = _userService.Login(mapped);
+            var token = await _userService.LoginAsync(mapped);
 
             return Ok(token);
         }

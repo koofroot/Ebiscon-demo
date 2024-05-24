@@ -12,7 +12,8 @@ namespace EbisconDemo.Services.Mapping
             CreateMap<ProductDto, Product>()
                 .ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<Rating, RatingDto>()
                 .ReverseMap();

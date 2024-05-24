@@ -4,8 +4,8 @@ namespace EbisconDemo.Data.Interfaces
 {
     public interface INotificationRepository : IRepository<Notification>
     {
-        IEnumerable<Notification> GetUserNotifications(int userId);
+        Task<IEnumerable<Notification>> GetUserNotificationsAsync(int userId);
 
-        void SetRead(int id);
+        Task SetReadAsync(int id);
     }
 }

@@ -4,6 +4,8 @@ using EbisconDemo.Data.Models;
 using EbisconDemo.Services.Interfaces;
 using EbisconDemo.Services.Models;
 using EbisconDemo.Services.Models.Configuration;
+using System.Collections.Concurrent;
+using System.Linq;
 
 namespace EbisconDemo.Services.Services
 {
@@ -29,29 +31,37 @@ namespace EbisconDemo.Services.Services
 
         public async Task SyncProductsAsync()
         {
-            foreach (var source in _productSources.SynchronizationQueue)
-            {
-                var apiProducts = await _dataRetrieveService.GetProductsForAsync(source);
-                var ourProducts = _productRepository.Get(x => x.SourceName.ToLower() == source.ToLower()).ToArray();
-
-                var missingProducts = apiProducts
-                    .ToArray()
-                    .Where(their => !ourProducts.Any(our => our.ExternalId == their.Id))
-                    .ToList();
-                                
-                var mapped = _mapper.Map<IEnumerable<ProductDto>, IEnumerable<Product>>(missingProducts)
-                    .Select(x =>
+            var theirProductsBag = new ConcurrentBag<ProductDto>();
+            var tasks = _productSources.SynchronizationQueue
+                .AsParallel()
+                .WithDegreeOfParallelism(5)
+                .Select(async sourceName => 
+                { 
+                    (await _dataRetrieveService.GetProductsForAsync(sourceName))
+                    .ToList()
+                    .ForEach(product => 
                     {
-                        x.SourceName = source;
-                        return x;
-                    })
+                        product.SourceName = sourceName;
+                        theirProductsBag.Add(product);
+                    }); 
+                })
+                .ToArray();
+
+            var ourProductsTask = _productRepository
+                .GetAsync(x => _productSources.SynchronizationQueue.Select(x => x.ToLower()).Contains(x.SourceName.ToLower()));
+
+            await Task.WhenAll([.. tasks, ourProductsTask]);
+
+            var missingProducts = theirProductsBag
+                    .ToArray()
+                    .Where(their => !ourProductsTask.Result.Any(our => our.ExternalId == their.Id && our.SourceName == their.SourceName))
                     .ToList();
 
-                // No update for now
-                _productRepository.Create(mapped);
-            }
+            var mapped = _mapper.Map<IEnumerable<ProductDto>, IEnumerable<Product>>(missingProducts);
 
-            _productRepository.Save();
+            await _productRepository.CreateAsync(mapped);
+
+            await _productRepository.SaveAsync();
         }
     }
 }

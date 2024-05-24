@@ -31,9 +31,9 @@ namespace EbisconDemo.Api.Controllers
 
         [HttpPut("SetRole")]
         [Authorize(Roles = "Admin")]
-        public IActionResult SetRole([FromBody] SetRoleApiModel model)
+        public async Task<IActionResult> SetRoleAsync([FromBody] SetRoleApiModel model)
         {
-            _userService.SetUserRole(model.UserEmail, model.Role);
+            await _userService.SetUserRoleAsync(model.UserEmail, model.Role);
 
             return Ok();
         }

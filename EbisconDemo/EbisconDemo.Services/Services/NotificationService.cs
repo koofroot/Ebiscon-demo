@@ -19,14 +19,14 @@ namespace EbisconDemo.Services.Services
             _mapper = mapper;
         }
 
-        public NotificationsResponse GetNotifications(int userId)
+        public async Task<NotificationsResponse> GetNotificationsAsync(int userId)
         {
             if(userId <= 0)
             {
                 throw new ArgumentException("User ID cannot be empty.", nameof(userId));
             }
 
-            var notifications = _notificationRepository.GetUserNotifications(userId);
+            var notifications = await _notificationRepository.GetUserNotificationsAsync(userId);
 
             if (!notifications.Any())
             {
@@ -49,7 +49,7 @@ namespace EbisconDemo.Services.Services
             return dto;
         }
 
-        public void NotifyOrderCreated(int orderId, string message, int? userId = null)
+        public async Task NotifyOrderCreatedAsync(int orderId, string message, int? userId = null)
         {
             if(orderId <= 0 || string.IsNullOrWhiteSpace(message))
             {
@@ -63,16 +63,16 @@ namespace EbisconDemo.Services.Services
                 Message = message
             };
 
-            _notificationRepository.Create(notification);
+            await _notificationRepository.CreateAsync(notification);
 
-            _notificationRepository.Save();
+            await _notificationRepository.SaveAsync();
         }
 
-        public void SetRead(int id)
+        public async Task SetReadAsync(int id)
         {
-            _notificationRepository.SetRead(id);
+            await _notificationRepository.SetReadAsync(id);
 
-            _notificationRepository.Save();
+            await _notificationRepository.SaveAsync();
         }
     }
 }

@@ -18,18 +18,18 @@ namespace EbisconDemo.Api.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Customer,Manager,Admin")]
-        public IActionResult Products()
+        public async Task<IActionResult> ProductsAsync()
         {
-            var products = _productService.GetAllProducts();
+            var products = await _productService.GetAllProductsAsync();
 
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Customer,Manager,Admin")]
-        public IActionResult GetProduct(int id)
+        public async Task<IActionResult> GetProductAsync(int id)
         {
-            var product = _productService.GetProduct(id);
+            var product = await _productService.GetProductAsync(id);
 
             if(product == null)
             {

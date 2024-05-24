@@ -5,11 +5,11 @@ namespace EbisconDemo.Services.Interfaces
 {
     public interface IOrderService
     {
-        IEnumerable<OrderDto> GetAllOrders();
+        Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
 
-        OrderDto OrderProduct(CreateOrderDto model);
+        Task<OrderDto> OrderProductAsync(CreateOrderDto model);
 
-        OrderDto GetOrder(int id);
-        void SetStatus(int orderId, string status);
+        Task<OrderDto> GetOrderAsync(int id);
+        Task SetStatusAsync(int orderId, string status);
     }
 }

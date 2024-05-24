@@ -4,16 +4,16 @@ namespace EbisconDemo.Data.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        T? Get(int id);
+        Task<T?> GetAsync(int id);
 
-        IEnumerable<T> Get(Func<T, bool> predicate);
+        Task<IEnumerable<T>> GetAsync(Func<T, bool> predicate);
 
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
 
-        void Create(IEnumerable<T> entities);
+        Task CreateAsync(IEnumerable<T> entities);
 
-        void Create(T entity);
+        Task CreateAsync(T entity);
 
-        void Save();
+        Task SaveAsync();
     }
 }

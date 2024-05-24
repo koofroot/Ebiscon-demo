@@ -10,7 +10,7 @@ namespace EbisconDemo.Services.Services
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
-        public string GenerateToken(User user, DateTime tokenExpirationTime)
+        public Task<string> GenerateTokenAsync(User user, DateTime tokenExpirationTime)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EbisconConstants.JwtSecret));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -29,7 +29,7 @@ namespace EbisconDemo.Services.Services
                 expires: tokenExpirationTime,
                 signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
     }
 }

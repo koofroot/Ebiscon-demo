@@ -17,7 +17,7 @@ namespace EbisconDemo.Api.Middlewares
             {
                 await _next.Invoke(context);
             }
-            catch(UserNotFoundException)
+            catch(NotFoundException)
             {
                 context.Response.StatusCode = 403;
             }

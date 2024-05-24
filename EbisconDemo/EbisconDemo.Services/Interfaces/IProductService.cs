@@ -4,8 +4,8 @@ namespace EbisconDemo.Services.Interfaces
 {
     public interface IProductService
     {
-        IEnumerable<ProductDto> GetAllProducts();
+        Task<IEnumerable<ProductDto>> GetAllProductsAsync();
 
-        ProductDto GetProduct(int id);
+        Task<ProductDto> GetProductAsync(int id);
     }
 }

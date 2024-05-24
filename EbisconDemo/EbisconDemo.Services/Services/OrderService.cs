@@ -27,9 +27,9 @@ namespace EbisconDemo.Services.Services
             _notificationService = notificationService;
         }
 
-        public IEnumerable<OrderDto> GetAllOrders()
+        public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
         {
-            var orders = _orderRepository.GetAll();
+            var orders = await _orderRepository.GetAllAsync();
 
             if(orders == null || !orders.Any())
             {
@@ -41,53 +41,53 @@ namespace EbisconDemo.Services.Services
             return mapped;
         }
 
-        public OrderDto GetOrder(int id)
+        public async Task<OrderDto> GetOrderAsync(int id)
         {
             if(id <= 0)
             {
                 throw new ArgumentException("id must be greater than 0.", nameof(id));
             }
 
-            var order = _orderRepository.Get(id);
+            var order = await _orderRepository.GetAsync(id);
 
             var mapped = _mapper.Map<OrderDto>(order);
 
             return mapped;
         }
 
-        public OrderDto OrderProduct(CreateOrderDto model)
+        public async Task<OrderDto> OrderProductAsync(CreateOrderDto model)
         {
             if(model.ProductId <= 0 || model.Count <= 0 || model.UserId <= 0)
             {
                 throw new ArgumentException("Product ID, User ID or Count is incorrect.");
             }
 
-            var product = _productRepository.Get(model.ProductId);
+            var product = await _productRepository.GetAsync(model.ProductId);
 
             if(product == null)
             {
-                throw new ArgumentException("Product with that ID is not found.", nameof(model.ProductId));
+                throw new ProductNotFoundException("Product with that ID is not found.");
             }
 
             var order = _mapper.Map<Order>(model);
             
-            _orderRepository.Create(order);
+            await _orderRepository.CreateAsync(order);
 
-            _orderRepository.Save();
+            await _orderRepository.SaveAsync();
 
-            _notificationService.NotifyOrderCreated(order.Id, "New order has been created.");
+            await _notificationService.NotifyOrderCreatedAsync(order.Id, "New order has been created.");
 
-            var createdOrder = _orderRepository.Get(order.Id);
+            var createdOrder = await _orderRepository.GetAsync(order.Id);
 
             var mapped = _mapper.Map<Order, OrderDto>(createdOrder!);
 
             return mapped;
         }
 
-        public void SetStatus(int orderId, string status)
+        public async Task SetStatusAsync(int orderId, string status)
         {
             var isStatusValid = Enum.TryParse<OrderStatus>(status, true, out var orderStatus);
-            var order = _orderRepository.Get(orderId);
+            var order = await _orderRepository.GetAsync(orderId);
 
             if(!isStatusValid || order == null)
             {                
@@ -96,7 +96,7 @@ namespace EbisconDemo.Services.Services
 
             order.Status = orderStatus;
 
-            _orderRepository.Save();
+            await _orderRepository.GetAllAsync();
         }
     }
 }

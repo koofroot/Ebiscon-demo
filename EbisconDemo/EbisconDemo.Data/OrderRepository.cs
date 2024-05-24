@@ -10,7 +10,7 @@ namespace EbisconDemo.Data
         {
         }
 
-        public override IEnumerable<Order> GetAll()
+        public override async Task<IEnumerable<Order>> GetAllAsync()
         {
             return _dbSet
                 .Include(x => x.User)
@@ -18,7 +18,7 @@ namespace EbisconDemo.Data
                 .ToList();
         }
 
-        public override Order? Get(int id)
+        public override async Task<Order?> GetAsync(int id)
         {
             return _dbSet
                 .Include(x => x.User)

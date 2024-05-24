@@ -10,7 +10,7 @@ namespace EbisconDemo.Data
         {
         }
 
-        public IEnumerable<Notification> GetUserNotifications(int userId)
+        public async Task<IEnumerable<Notification>> GetUserNotificationsAsync(int userId)
         {
             return _dbSet
                 .Where(x => (x.NotifyUserId == null || x.NotifyUserId == userId) && !x.IsRead)
@@ -20,9 +20,9 @@ namespace EbisconDemo.Data
                 .ToList();
         }
 
-        public void SetRead(int id)
+        public async Task SetReadAsync(int id)
         {
-            var notification = _dbSet.Find(id);
+            var notification = await _dbSet.FindAsync(id);
 
             if(notification == null)
             {
